@@ -1,7 +1,7 @@
 /*
-* Today, we will make a basic recursively defined
-* class! It is called a linked list. Remember,
-* recursion refers to any definition which refers to itself.
-* Ergo, we will be making a node class which refers to itself 
-*  in its definition.
+* Today, we will create a Manga class which inherits from
+* the Book class. It will have the following attributes:
+*       std::string language
+*       bool colour
+* As well as getters and setters, constructors, etc.
 */

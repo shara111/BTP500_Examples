@@ -20,3 +20,4 @@ int main(){
     printf("The factorial of 10 is: %d\n", factorial(10));
     return 0;
 }
+
