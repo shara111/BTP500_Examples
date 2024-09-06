@@ -12,7 +12,7 @@ Book::Book(int num, std::string title, int length){
     pageLength = length;
 }
 
-Book::Book(Book& other){
+Book::Book(const Book& other){
     bookID = other.bookID;
     bookTitle.assign(other.bookTitle);
     pageLength = other.pageLength;

@@ -16,7 +16,7 @@ protected:
 public:
     Book();
     Book(int, std::string, int);
-    Book(Book&);
+    Book(const Book&);
 
     int getBookID();
     void setBookID(int);
