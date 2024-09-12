@@ -6,7 +6,7 @@ Book::Book(){
     pageLength = -1;
 }
 
-Book::Book(int num, std::string title, int length){
+Book::Book(const int num, const std::string title, const int length){
     bookID = num;
     bookTitle.assign(title);
     pageLength = length;
@@ -19,7 +19,7 @@ Book::Book(const Book& other){
 }
 
 
-int Book::getBookID(){
+int Book::getBookID() const{
     return bookID;
 }
 
@@ -27,27 +27,30 @@ void Book::setBookID(int ID){
     bookID = ID;
 }
 
-std::string Book::getBookTitle(){
+std::string Book::getBookTitle() const{
     return bookTitle;
 }
 
-void Book::setBookTitle(std::string title){
+void Book::setBookTitle(const std::string title){
     bookTitle.assign(title);
 }
 
-int Book::getPageLength(){
+int Book::getPageLength() const{
     return pageLength;
 }
 
-void Book::setPageLength(int len){
+void Book::setPageLength(const int len){
     pageLength = len;
 }
 
-
-std::ostream& Book::displayBook(std::ostream& os){
+std::ostream& Book::displayBook(std::ostream& os) const{
     os << "Book Number: " << this->bookID << std::endl;
     os << "Book Title: " << this->bookTitle << std::endl;
     os << "Page Length: " << this->pageLength << std::endl;
 
     return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Book book){
+    return book.displayBook(os);
 }

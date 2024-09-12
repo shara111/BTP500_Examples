@@ -15,20 +15,27 @@ class Manga : public Book{
     std::string language;
     bool colour;
     std::string* authors;
+    int numAuthors;
+    void constructionHelper(const std::string, const bool, const std::string*, const int);
 public:
-    void constructionHelper(std::string, bool, std::string*);
 
     Manga();
-    Manga(std::string, bool, std::string*, int, std::string, int);
+    Manga(const std::string, const bool, const std::string*, const int, const int, const std::string, const int);
     Manga(const Manga&);
-
     ~Manga();
 
-    std::string getLang() const;
-    bool getColour() const;
-    std::string* getAuthors() const;
-
     Manga& operator=(const Manga&);
+
+    std::string getLanguage() const;
+    void setLanguage(const std::string);
+    bool getColour() const;
+    void setColour(const bool);
+    std::string* getAuthors() const;
+    void setAuthors(const std::string*, const int);
+    int getNumAuthors() const;
+
+    std::ostream& displayManga(std::ostream&) const;
+    friend std::ostream& operator<<(std::ostream&, const Manga);
 };
 
 #endif
