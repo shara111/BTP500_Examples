@@ -10,6 +10,12 @@ Where n!=n(n-1)(n-2)…1, and 0! = 1 by definition.
 
 Where F(n)=F(n-1)+F(n-2), and F(1) = 1 and F(0) = 0
 
+Bonus question: There is a power implementation in C++ in this
+folder in the repo. Can you:
+
+a - Write it in Python?
+b - Write it without recursion (and obviously not calling a library?)
+
 '''
 
 def factorial(num):
