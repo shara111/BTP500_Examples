@@ -15,19 +15,20 @@ protected:
     int pageLength;
 public:
     Book();
-    Book(int, std::string, int);
+    Book(const int, const std::string, const int);
     Book(const Book&);
 
-    int getBookID();
-    void setBookID(int);
+    int getBookID() const;
+    void setBookID(const int);
 
-    std::string getBookTitle();
-    void setBookTitle(std::string);
+    std::string getBookTitle() const;
+    void setBookTitle(const std::string);
 
-    int getPageLength();
-    void setPageLength(int);
+    int getPageLength() const;
+    void setPageLength(const int);
 
-    std::ostream& displayBook(std::ostream&);
+    std::ostream& displayBook(std::ostream&) const;
+    friend std::ostream& operator<<(std::ostream&, const Book);
 };
 
 #endif
