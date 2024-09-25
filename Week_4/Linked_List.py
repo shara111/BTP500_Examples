@@ -17,88 +17,64 @@ class SentinelNode:
 # Iterator Class
 class ListIterator:
     def __init__(self, linked_list):
-        self.current = linked_list.sentinel.next
-        self.start = linked_list.sentinel
+        self.current = linked_list.start # hehehe
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        if self.current == None:
-            raise StopIteration # Well ya gotta stop somehow
-        value = self.current.data
         self.current = self.current.next
-        return value
+        if self.current == None:
+            raise StopIteration
+        return self.current.data
 
 class LinkedList:
     def __init__(self):
-        self.sentinel = SentinelNode() 
-        self.sentinel.next = None
-        self.size = 0
+        self.start = SentinelNode() 
+        self.end = SentinelNode()
 
     def push(self, data):
         '''Insert an element at the beginning of the list.'''
         new_node = Node(data)
-        new_node.next = self.sentinel.next
-        self.sentinel.next = new_node
-        self.size += 1
+        new_node.next = self.start.next
+        if self.start.next == None:
+            self.end.next = new_node
+        self.start.next = new_node
 
     def append(self, data):
         '''Insert an element at the end of the list.'''
         new_node = Node(data)
-        last = self.sentinel
-
-        while last.next:
-            last = last.next
-        last.next = new_node
-        self.size += 1
+        self.end.next.next = new_node
+        self.end.next = new_node
 
     def pop(self):
         '''Remove the element from the beginning of the list.'''
-        if not self.sentinel.next:
+        if not self.start.next:
             return None
-        popped_node = self.sentinel.next
-        self.sentinel.next = self.sentinel.next.next
-        self.size -= 1
+        popped_node = self.start.next
+        self.start.next = popped_node.next
+        if self.start.next == None:
+            self.end.next = None
         return popped_node.data
 
     def search(self, key):
         '''Search for an element in the list. Linear search'''
-        current = self.sentinel.next
-        flag = False
+        current = self.start.next
         while current:
             if current.data == key:
-                return flag
+                return True
             current = current.next
-        return flag
+        return False
 
     def display(self):
         '''Display the elements in the list.'''
-        current = self.sentinel.next
-        while current:
-            print(current.data, end=" -> ")
-            current = current.next
-        print("None")
+        for data in iter(self):
+            print (data, end=" -> ")
+        print ("None")
     
     # Iter is short for iterator
     def __iter__(self):
         return ListIterator(self)
-
-
-class LinkedListIterator:
-    def __init__(self, head):
-        self.current = head
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        if self.current is None:
-            raise StopIteration
-        data = self.current.data
-        self.current = self.current.next
-        return data
-
 
 if __name__ == "__main__":
     # Create a linked list (please don't name your variables
@@ -138,3 +114,8 @@ if __name__ == "__main__":
     print("Iterating through the list:")
     for value in ll:
         print(value) 
+
+    print ("After removing all elements from the list:")
+    for value in ll:
+        ll.pop()
+    ll.display()
