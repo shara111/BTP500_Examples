@@ -14,6 +14,21 @@ class SentinelNode:
     def __init__(self):
         self.next = None
 
+# Iterator Class
+class ListIterator:
+    def __init__(self, linked_list):
+        self.current = linked_list.sentinel.next
+        self.start = linked_list.sentinel
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.current == None:
+            raise StopIteration # Well ya gotta stop somehow
+        value = self.current.data
+        self.current = self.current.next
+        return value
 
 class LinkedList:
     def __init__(self):
@@ -64,6 +79,10 @@ class LinkedList:
             print(current.data, end=" -> ")
             current = current.next
         print("None")
+    
+    # Iter is short for iterator
+    def __iter__(self):
+        return ListIterator(self)
 
 
 class LinkedListIterator:
@@ -117,5 +136,5 @@ if __name__ == "__main__":
 
     # Using an iterator
     print("Iterating through the list:")
-    for data in LinkedListIterator(ll.sentinel.next):
-        print(data)
+    for value in ll:
+        print(value) 
