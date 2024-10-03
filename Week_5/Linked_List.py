@@ -76,9 +76,13 @@ class LinkedList:
         while current.next:
             if current.next.data == data:
                 current.next = current.next.next
-                # if was at end of list
+                # if at end of list, update end sentinel
                 if current.next is None:
-                    self.end.next = None
+                    # if list was only 1 element long
+                    if current == self.start:
+                        self.end.next = None
+                    else:
+                        self.end.next = current
                 return True
             current = current.next
         return False
