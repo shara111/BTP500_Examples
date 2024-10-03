@@ -60,11 +60,25 @@ class LinkedList:
             self.end.next = None
         return popped_node.data
 
-    def search(self, key):
+    def search(self, data):
         '''Search for an element in the list. Linear search'''
         current = self.start.next
         while current:
-            if current.data == key:
+            if current.data == data:
+                return True
+            current = current.next
+        return False
+    
+    def remove(self, data):
+        '''Removes element from the list. Linear search.
+        Returns True if found and removed, False otherwise.'''
+        current = self.start
+        while current.next:
+            if current.next.data == data:
+                current.next = current.next.next
+                # if was at end of list
+                if current.next is None:
+                    self.end.next = None
                 return True
             current = current.next
         return False

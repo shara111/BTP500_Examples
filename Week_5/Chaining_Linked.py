@@ -29,29 +29,13 @@ class LinkedHash:
         # add new element
         index = self.hash_function(key)
         # dict should not contain duplicate keys - overwrite duplicates
-        # how does one remove an element from a linked list?
-        element = self.table[index].pop()
-        if element is None:
-            # if no elements in linked list, push new key-value
-            self.table[index].push((key, value))
-            self.elements += 1
-            return
-        first_key = element[0]
-        while (True):
+        for element in self.table[index]:
             if element[0] == key:
-                # leave previous key-value removed; add new key-value
+                self.table[index].remove(element)
                 self.table[index].append((key, value))
                 return
-            # append to back of linked list
-            self.table[index].append(element)
-            element = self.table[index].pop()
-            if element[0] == first_key:
-                # looped around - key-value not found. re-add last removed element
-                self.table[index].push(element)
-                # key-value not found; add to list
-                self.table[index].push((key, value))
-                self.elements += 1
-                return
+        self.elements += 1
+        self.table[index].append((key, value))
     def lookup(self, key):
         index = self.hash_function(key)
         for element in self.table[index]:
@@ -60,22 +44,9 @@ class LinkedHash:
         return None
     def delete(self, key):
         index = self.hash_function(key)
-        element = self.table[index].pop()
-        if element is None:
-            return
-        first_key = element[0]
-        while (True):
+        for element in self.table[index]:
             if element[0] == key:
-                # leave removed
-                self.elements -= 1
-                return
-            # append to back of linked list
-            self.table[index].append(element)
-            element = self.table[index].pop()
-            # if looped detected
-            if element[0] == first_key:
-                # re-add last removed element
-                self.table[index].append(element)
+                self.table[index].remove(element)
                 return
     def print(self):
         print ("Contents of linked list hash table:")
@@ -106,12 +77,12 @@ if __name__ == "__main__":
     for i in range(100):
         lh.insert(str(i), i)
     print ("Size: ", lh.size)
+    lh.print()
     print()
     print ("lookup all 100 elements")
     for i in range(100):
         if lh.lookup(str(i)) != i:
-            print ("Error! " + i + " not found, or is incorrect!")
-            lh.print()
+            print ("Error! " + str(i) + " not found, or is incorrect!")
     print()
     print("update all 100 elements")
     for i in range(100):
@@ -122,8 +93,7 @@ if __name__ == "__main__":
     print("lookup all 100 elements again")
     for i in range(100):
         if lh.lookup(str(i)) != i + 1:
-            print ("Error! " + i + " not found, or is incorrect!")
-            lh.print()
+            print ("Error! " + str(i) + " not found, or is incorrect!")
     print()
     print("remove all 100 elements. should now be empty.")
     for i in range(100):
