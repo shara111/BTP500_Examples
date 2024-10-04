@@ -1,6 +1,6 @@
 '''
 Finally, let's look at quick sort! On average we can compare it
-to merge sort, but quick sort runs the rise of being O(n^2)
+to merge sort, but quick sort runs the risk of being O(n^2)
 '''
 
 def quick_sort(arr):
