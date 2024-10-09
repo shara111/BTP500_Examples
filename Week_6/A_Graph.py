@@ -14,7 +14,6 @@ class Vertex:
     def add_adjacency(self, other, weight):
         # Cursed filter nonsense
         if not any(filter(lambda o: o[0] == other, self.adjacencies)):
-            print("Flag")
             self.adjacencies.append((other, weight))
     
     def __str__(self):
