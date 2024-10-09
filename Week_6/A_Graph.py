@@ -12,7 +12,9 @@ class Vertex:
     # Only add the adjancency if it's not already there
     # Assume other is already a vertex object
     def add_adjacency(self, other, weight):
-        if other not in self.adjacencies:
+        # Cursed filter nonsense
+        if not any(filter(lambda o: o[0] == other, self.adjacencies)):
+            print("Flag")
             self.adjacencies.append((other, weight))
     
     def __str__(self):
