@@ -60,11 +60,12 @@ class LinkedList:
     def search(self, key):
         '''Search for an element in the list. Linear search'''
         current = self.start.next
-        while current:
+        flag = False
+        while current and not flag:
             if current.data == key:
-                return True
+                flag = True
             current = current.next
-        return False
+        return flag
 
     def display(self):
         '''Display the elements in the list.'''
