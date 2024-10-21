@@ -5,10 +5,6 @@ linked lists. Of course, here for brevity we're taking
 advantage of Python's built-in features.
 
 By "brevity" I actually mean I am lazy.
-
-Good exercise: create a new file on a new branch and
-implement this with the linked list from last week.
-Then do a pull request to merge!
 '''
 
 class HashTable:

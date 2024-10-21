@@ -51,8 +51,12 @@ class LinkedList:
 
     def append(self, data):
         '''Insert an element at the end of the list.'''
+        '''Insert an element at the end of the list.'''
         new_node = Node(data)
-        self.end.next.next = new_node
+        if not self.start.next:
+            self.start.next = new_node
+        if self.end.next:
+            self.end.next.next = new_node
         self.end.next = new_node
 
     def pop(self):
@@ -74,11 +78,28 @@ class LinkedList:
                 flag = True
             current = current.next
         return flag
+    
+    def remove(self, element):
+        '''Removes a specified element.'''
+        current = self.start.next
+        prev = None
+        found = False
+        while current and not found:
+            if current.data == element:
+                found = True
+            else:
+                prev = current
+                current = current.next
+        if found:
+            prev.next = current.next
+            return current
+        return None
 
     def display(self):
         '''Display the elements in the list.'''
         for data in iter(self):
             data.display()
+        print()
     
     # Iter is short for iterator
     def __iter__(self):
@@ -115,6 +136,10 @@ if __name__ == "__main__":
     found = ll.search(40)
     print(f"Element 40 found: {found}") 
 
+    removed = ll.remove(40)
+    print(f"Element 40 removed:")
+    ll.display()
+
     not_found = ll.search(100)
     print(f"Element 100 found: {not_found}")
 
@@ -122,6 +147,7 @@ if __name__ == "__main__":
     print("Iterating through the list:")
     for value in ll:
         value.display()
+    print()
 
     print ("After removing all elements from the list:")
     for value in ll:
