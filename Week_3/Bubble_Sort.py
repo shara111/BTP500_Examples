@@ -3,14 +3,14 @@ Let's look at an implementation of bubble sort!
 '''
 # Let's assume arr's len is 5
 def bubble_sort(arr):
-    n = len(arr) #1
+    n = len(arr) # 1 
     # Bubbles up the list
-    for i in range(n): # 5
-        for j in range(0, n-i-1): # 15
+    for i in range(n): # n
+        for j in range(0, n-i-1): # n ^2
             # Checks if the items are out of order
-            if arr[j] > arr[j+1]: # 15
+            if arr[j] > arr[j+1]: # 
                 # Switches them
-                arr[j], arr[j+1] = arr[j+1], arr[j] # 15
+                arr[j], arr[j+1] = arr[j+1], arr[j] #
 
 # T(n) = 1 + n + (n-1) + (n - 2) + (n - 3) + .... + (n - (n-1)) -> n^2
 

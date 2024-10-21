@@ -3,33 +3,24 @@ from Linked_List import *
 class Queue:
     def __init__(self):
         self.linked_list = LinkedList()
-        self.tail = None  # Keep track of the last node for efficient enqueue
 
     def enqueue(self, data):
         '''Add an element to the end of the queue.'''
         new_node = Node(data)
-        if self.linked_list.is_empty():
-            self.linked_list.push(data)
-            self.tail = new_node  # Set tail for the first element
-        else:
-            self.tail.next = new_node  # Link the new node to the last node
-            self.tail = new_node  # Update the tail to the new node
-        self.linked_list.size += 1
+        self.linked_list.push(data)
 
     def dequeue(self):
         '''Remove the front element from the queue.'''
         if self.linked_list.is_empty():
             return None
-        front_data = self.linked_list.pop()
-        if self.linked_list.is_empty():
-            self.tail = None  # Reset tail if the queue is empty
+        front_data = self.linked_list.pop() 
         return front_data
 
     def peek(self):
         '''Return the front element without removing it.'''
         if self.linked_list.is_empty():
             return None
-        return self.linked_list.sentinel.next.data  # Return data of the first real node
+        return self.linked_list.start.next.data  # Return data of the first real node
 
     def is_empty(self):
         '''Check if the queue is empty.'''
@@ -39,6 +30,7 @@ class Queue:
         '''Display the elements in the queue.'''
         print("Queue:", end=" ")
         self.linked_list.display()
+        print()
 
 
 if __name__ == "__main__":
@@ -50,8 +42,8 @@ if __name__ == "__main__":
     queue.enqueue(30)
 
     print("After enqueueing elements:")
-    queue.display() 
-    
+    queue.display()
+
     # Peek at the front element
     front_element = queue.peek()
     print(f"Front element: {front_element}")

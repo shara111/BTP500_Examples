@@ -8,6 +8,11 @@ class Node:
     def __init__(self, data):
         self.data = data
         self.next = None
+    
+    def display(self):
+        print(f"{self.data}", end="")
+        if self.next:
+            print("->", end="")
 
 # Useful for edge cases!
 class SentinelNode:
@@ -26,18 +31,21 @@ class ListIterator:
         self.current = self.current.next
         if self.current == None:
             raise StopIteration
-        return self.current.data
+        return self.current
 
 class LinkedList:
     def __init__(self):
         self.start = SentinelNode() 
         self.end = SentinelNode()
+    
+    def is_empty(self):
+        return self.start.next == None
 
     def push(self, data):
         '''Insert an element at the beginning of the list.'''
         new_node = Node(data)
         new_node.next = self.start.next
-        if self.start.next == None:
+        if self.is_empty():
             self.end.next = new_node
         self.start.next = new_node
 
@@ -70,8 +78,7 @@ class LinkedList:
     def display(self):
         '''Display the elements in the list.'''
         for data in iter(self):
-            print (data, end=" -> ")
-        print ("None")
+            data.display()
     
     # Iter is short for iterator
     def __iter__(self):
@@ -95,7 +102,7 @@ if __name__ == "__main__":
     ll.append(50)
 
     print("After appending elements:")
-    ll.display() 
+    ll.display()
 
     # Pop the last element
     popped = ll.pop()
@@ -114,7 +121,7 @@ if __name__ == "__main__":
     # Using an iterator
     print("Iterating through the list:")
     for value in ll:
-        print(value) 
+        value.display()
 
     print ("After removing all elements from the list:")
     for value in ll:

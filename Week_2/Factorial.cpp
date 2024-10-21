@@ -12,7 +12,7 @@ int factorial(int num){
     // This is the recursive step. The step that calls the function
     // internally is where it becomes recursive.
     else{
-        return num * (factorial(num - 1));
+        return num * (factorial(num - 1)); 
     }
 }
 

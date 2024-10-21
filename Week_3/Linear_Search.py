@@ -9,7 +9,7 @@ def linear_search(arr, target):
     loc = -1
     for index, element in enumerate(arr):
         if element == target:
-            loc = index
+            loc = index 
     return loc
 
 if __name__ == '__main__':

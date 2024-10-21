@@ -19,7 +19,7 @@ class Stack:
 
     def peek(self):
         '''Return the top element without removing it.'''
-        return self.linked_list.peek()
+        return self.linked_list.start.next
 
     def is_empty(self):
         '''Check if the stack is empty.'''
@@ -27,12 +27,8 @@ class Stack:
 
     def display(self):
         '''Display the elements in the stack.'''
-        current = self.linked_list.sentinel.next
-        print("Stack:", end=" ")
-        while current:
-            print(current.data, end=" -> ")
-            current = current.next
-        print("None")
+        self.linked_list.display()
+        print()
 
 
 if __name__ == "__main__":
@@ -48,8 +44,7 @@ if __name__ == "__main__":
     stack.display()
 
     # Take a peek at the top element
-    top_element = stack.peek()
-    print(f"Top element: {top_element}")
+    print(f"Top element: {stack.peek().data}")
 
     # Pop an element
     popped = stack.pop()
