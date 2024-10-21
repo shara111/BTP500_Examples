@@ -35,6 +35,13 @@ class Graph:
         u.add_adjacency(v, weight)
         v.add_adjacency(u, weight)
 
+    def display(self):
+        for vert in self.verticies:
+            print(str(vert))
+            print("Adjacencies: ")
+            for ad in vert.adjacencies:
+                print(str(ad[0]), "with weight", str(ad[1]))
+
     # Note: this implementation only gives you the distances, not
     # the paths themselves! 
     def dijkstra(self, start):
@@ -70,7 +77,13 @@ class Graph:
         # Returns all distances
         return distances
 
-    # TODO: Implement MST
+    # Checks for a cycle
+    def check_cycle(self):
+        pass
+
+    # Creates a minimum spanning tree using kurskal's algorithm
+    def MST(self):
+        pass
 
 if __name__ == "__main__":
     graph = Graph()
@@ -85,6 +98,8 @@ if __name__ == "__main__":
     graph.add_edge(b, c, 2)
     graph.add_edge(b, d, 5)
     graph.add_edge(c, d, 1)
+
+    graph.display()
 
     # Running the algorithms!
     distances = graph.dijkstra(a)
