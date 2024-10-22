@@ -91,7 +91,7 @@ class Graph:
         # Sorting the edges by weight
         sorted_edges = sorted(self.edges, key=lambda tup: tup[2])
         # Marking nodes as univisted so cycles can't appear later on
-        nodes = {e:"uv" for e in self.verticies}
+        nodes = {e:0 for e in self.verticies}
         mst = []
 
         for edge in range(len(sorted_edges)):
@@ -110,13 +110,13 @@ class Graph:
                     break
             
             # If the edges are not the same  
-            if edge_v != edge_u:
-                if nodes[u] != "v":
+            if edge_v != edge_u and (edge_v and edge_u):
+                if nodes[u] < 2:
                     mst.append(edge_u)
-                    nodes[u] = "v"
-                if nodes[v] != "v":
+                    nodes[u] += 1
+                if nodes[v] < 2:
                     mst.append(edge_v)
-                    nodes[v] = "v"
+                    nodes[v] += 1
         return mst
 
 
