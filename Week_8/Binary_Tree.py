@@ -1,4 +1,3 @@
-import random
 '''
 This is a binary tree implementation. Nodes
 can have zero, one or two children.
@@ -46,7 +45,6 @@ class BinaryTree:
         self.root.display()
 
 if __name__ == "__main__":
-    random.seed(10)
     tree = BinaryTree(5)
     tree.add_node(8)
     tree.add_node(7)
