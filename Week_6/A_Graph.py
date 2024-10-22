@@ -111,7 +111,6 @@ class Graph:
             
             # If the edges are not the same  
             if edge_v != edge_u:
-                print("Flag")
                 if nodes[u] != "v":
                     mst.append(edge_u)
                     nodes[u] = "v"
