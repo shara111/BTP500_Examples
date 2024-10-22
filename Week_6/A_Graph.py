@@ -102,9 +102,9 @@ class Graph:
             # Search sorted_edges for a short edge connected to these edges
             for adj in range(edge, len(sorted_edges)):
                 if sorted_edges[adj][0] == u or sorted_edges[edge][1] == u:
-                    edge_u = (sorted_edges[adj][0] if sorted_edges[adj][0] == u else sorted_edges[edge][1])
+                    edge_u = (sorted_edges[adj] if sorted_edges[adj][0] == u else sorted_edges[edge])
                 elif sorted_edges[adj][0] == v or sorted_edges[edge][1] == v:
-                    edge_v = (sorted_edges[adj][0] if sorted_edges[adj][0] == v else sorted_edges[edge][1])
+                    edge_v = (sorted_edges[adj] if sorted_edges[adj][0] == v else sorted_edges[edge])
                 # Break the loop the moment a short connection is found
                 if edge_u and edge_v:
                     break
@@ -144,4 +144,4 @@ if __name__ == "__main__":
     mst = graph.MST()
     print("The minimum spanning tree for this graph is:")
     for v in mst:
-        print(str(v))
+        print(str(v[0]), str(v[1]), f"Weight: {v[2]}")
