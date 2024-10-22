@@ -12,9 +12,8 @@ class Vertex:
     # Only add the adjancency if it's not already there
     # Assume other is already a vertex object
     def add_adjacency(self, other, weight):
-        # Cursed filter nonsense
-        if not any(filter(lambda o: o[0] == other, self.adjacencies)):
-            self.adjacencies.append((other, weight))
+        # Filter nonsense no longer necessary because of edge list
+        self.adjacencies.append((other, weight))
     
     def __str__(self):
         str_rep = "Node: " + str(self.data)
@@ -24,16 +23,26 @@ class Graph:
     # Initializing an empty graph
     def __init__(self):
         self.verticies = set()
+        self.edges = set() # Adding a set to track edges for MST
 
     # Assumes that u and v are already Vertex objects
     def add_edge(self, u, v, weight):
-        if u not in self.verticies:
-            self.verticies.add(u)
-        if v not in self.verticies:
-            self.verticies.add(v)
-        # Since this is an undirected graph, both edges will be added
-        u.add_adjacency(v, weight)
-        v.add_adjacency(u, weight)
+        #--Updating to add edge list for MST implementation--
+        in_edges = False
+        for edge in self.edges:
+            # This kind of renders my lambda useless...
+            if ((edge[0] == u) and (edge[1] == v)) or ((edge[0] == v) and (edge[1] == u)):
+                in_edges = True
+        if not in_edges:
+            self.edges.add((v, u, weight))
+
+            #--Regular part f adding an edge to an undirected graph--
+            if u not in self.verticies:
+                self.verticies.add(u)
+            if v not in self.verticies:
+                self.verticies.add(v)
+            u.add_adjacency(v, weight)
+            v.add_adjacency(u, weight)
 
     def display(self):
         for vert in self.verticies:
@@ -77,13 +86,40 @@ class Graph:
         # Returns all distances
         return distances
 
-    # Checks for a cycle
-    def check_cycle(self):
-        pass
-
-    # Creates a minimum spanning tree using kurskal's algorithm
+    # Creates a minimum spanning tree using (kind of) kurskal's algorithm
     def MST(self):
-        pass
+        # Sorting the edges by weight
+        sorted_edges = sorted(self.edges, key=lambda tup: tup[2])
+        # Marking nodes as univisted so cycles can't appear later on
+        nodes = {e:"uv" for e in self.verticies}
+        mst = []
+
+        for edge in range(len(sorted_edges)):
+            # Isolate the nodes
+            u = sorted_edges[edge][0]
+            v = sorted_edges[edge][1]
+            edge_u, edge_v = None, None
+            # Search sorted_edges for a short edge connected to these edges
+            for adj in range(edge, len(sorted_edges)):
+                if sorted_edges[adj][0] == u or sorted_edges[edge][1] == u:
+                    edge_u = (sorted_edges[adj][0] if sorted_edges[adj][0] == u else sorted_edges[edge][1])
+                elif sorted_edges[adj][0] == v or sorted_edges[edge][1] == v:
+                    edge_v = (sorted_edges[adj][0] if sorted_edges[adj][0] == v else sorted_edges[edge][1])
+                # Break the loop the moment a short connection is found
+                if edge_u and edge_v:
+                    break
+            
+            # If the edges are not the same  
+            if edge_v != edge_u:
+                print("Flag")
+                if nodes[u] != "v":
+                    mst.append(edge_u)
+                    nodes[u] = "v"
+                if nodes[v] != "v":
+                    mst.append(edge_v)
+                    nodes[v] = "v"
+        return mst
+
 
 if __name__ == "__main__":
     graph = Graph()
@@ -105,4 +141,8 @@ if __name__ == "__main__":
     distances = graph.dijkstra(a)
     for v in distances:
         print(f"The shortest distance from Node A to {v} is {distances[v]}")
-    #print("Minimum Spanning Tree Edges:", graph.prim_mst())
+
+    mst = graph.MST()
+    print("The minimum spanning tree for this graph is:")
+    for v in mst:
+        print(str(v))
