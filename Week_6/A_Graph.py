@@ -105,18 +105,18 @@ class Graph:
                     edge_u = (sorted_edges[adj] if sorted_edges[adj][0] == u else sorted_edges[edge])
                 elif sorted_edges[adj][0] == v or sorted_edges[edge][1] == v:
                     edge_v = (sorted_edges[adj] if sorted_edges[adj][0] == v else sorted_edges[edge])
-                # Break the loop the moment a short connection is found
+                # Break the loop the moment a short connection is found for both
                 if edge_u and edge_v:
                     break
             
             # If the edges are not the same  
-            if edge_v != edge_u and (edge_v and edge_u):
-                if nodes[u] < 2:
+            if edge_v != edge_u:
+                if nodes[u] <= 1 and edge_u:
                     mst.append(edge_u)
-                    nodes[u] += 1
-                if nodes[v] < 2:
+                    nodes[u] = nodes[u] + 1
+                if nodes[v] <= 1 and edge_v:
                     mst.append(edge_v)
-                    nodes[v] += 1
+                    nodes[v] = nodes[v] + 1
         return mst
 
 
