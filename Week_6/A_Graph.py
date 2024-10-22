@@ -145,3 +145,8 @@ if __name__ == "__main__":
     print("The minimum spanning tree for this graph is:")
     for v in mst:
         print(str(v[0]), str(v[1]), f"Weight: {v[2]}")
+
+
+# Complexity for the MST implementation is currently O(E^2) because I do not check for
+# visitation in the inner loop; if I check for visited nodes inside the inner loop,
+# it will become O(ElogE), especially if I break early.
