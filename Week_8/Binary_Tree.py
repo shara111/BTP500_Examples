@@ -44,6 +44,8 @@ class BinaryTree:
     def display(self):
         self.root.display()
 
+    #TODO: Add height calculation
+
 if __name__ == "__main__":
     tree = BinaryTree(5)
     tree.add_node(8)
