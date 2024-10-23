@@ -48,6 +48,19 @@ class BST:
                 found = self.left.search(data)
         return found
     
+    def find_height(self):
+        '''Finds the maximum depth of the tree'''
+        value = 0
+        if self.data:
+            left, right = 0, 0
+            if self.left:
+                left = self.left.find_height()
+            if self.right:
+                right = self.right.find_height()
+            value = (right if right > left else left) + 1
+        return value
+
+    #-----Printing Functions------
     def inorder_print(self):
         '''Prints values from smallest to largest.'''
         # Will only print things if something's there
@@ -80,6 +93,7 @@ class BST:
             if self.right:
                 self.right.print_tree(prefix + ("|   " if is_left else "    "), False)
 
+
 if __name__ == "__main__":
     bst = BST(6)
     bst.insert(7)
@@ -101,3 +115,5 @@ if __name__ == "__main__":
     print("Printing the BST pre-ordered...")
     bst.pre_order_print()
     print()
+
+    print(f"The height (max depth) of this tree is: {bst.find_height()}")
