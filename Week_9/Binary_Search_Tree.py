@@ -1,3 +1,4 @@
+import queue
 '''
 This is a Python implementation of BST. I actually have a C++ 
 version on my GitHub already: 
@@ -80,6 +81,23 @@ class BST:
                 self.left.inorder_print()
             if self.right:
                 self.right.inorder_print()
+    
+    def breadth_first_print(self):
+        '''Cathy's implementation, modified for this data structure.'''
+        the_nodes = queue.Queue()
+
+        if self.data:
+            the_nodes.put(self)
+
+        while not the_nodes.empty():
+            curr = the_nodes.get()
+
+            if curr.left:
+                the_nodes.put(curr.left)
+            if curr.right:
+                the_nodes.put(curr.right)
+
+            print(curr.data, end=" ")
 
     def print_tree(self, prefix, is_left=False):
         '''Prints a string representation of the actual tree.'''
@@ -107,6 +125,10 @@ if __name__ == "__main__":
 
     print(f"Is 10 in the our BST? {bst.search(10)}")
     print(f"Is -1 in the our BST? {bst.search(-1)}")
+
+    print("Printing the BST with breadth first...")
+    bst.breadth_first_print()
+    print()
 
     print("Printing the BST in order...")
     bst.inorder_print()
