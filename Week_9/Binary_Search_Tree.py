@@ -36,6 +36,47 @@ class BST:
             else:
                 self.right.insert(data)
     
+    def remove(self, data):
+        # Base case: we need to find the node first
+        if not self:
+            return self
+        # Case 1: Find the node and remove it
+        if data < self.data:
+            if self.left:
+                self.left = self.left.remove(data)
+        elif data > self.data:
+            if self.right:
+                self.right = self.right.remove(data)
+        else:
+            # Case 2: The node to delete is found
+            
+            # Case 2.1: Node has no children (leaf node)
+            if not self.left and not self.right:
+                return None
+            
+            # Case 2.2: Node has only one child
+            if not self.left:
+                return self.right
+            elif not self.right:
+                return self.left
+            
+            # Case 2.3: Node has two children
+            # Find the inorder successor (smallest node in the right subtree)
+            min_larger_node = self.right.find_min()
+            # Replace the current node's data with the inorder successor's data
+            self.data = min_larger_node.data
+            # Now delete the inorder successor node
+            self.right = self.right.remove(self.data)
+        
+        return self
+
+    def find_min(self):
+        '''Helper function to find the minimum value in the right subtree'''
+        current = self
+        while current.left:
+            current = current.left
+        return current
+
     def search(self, data):
         found = False
         # Will only check if the tree exists at all
@@ -125,6 +166,9 @@ if __name__ == "__main__":
 
     print(f"Is 10 in the our BST? {bst.search(10)}")
     print(f"Is -1 in the our BST? {bst.search(-1)}")
+
+    bst.remove(3)
+    bst.print_tree("")
 
     print("Printing the BST with breadth first...")
     bst.breadth_first_print()

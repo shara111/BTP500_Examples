@@ -14,69 +14,165 @@ Node's balance = height of right - height of left
 
 class AVL_Tree:
     def __init__(self, data=None):
+        '''Initialize the node with data and set left/right children to None'''
         self.data = data
         self.left = None
         self.right = None
-        self.balance = 0
+        # Initial balance factor of the node (0 means balanced)
+        self.balance = 0 
 
     def rebalance_helper(self):
-        pass
+        '''Helper function to handle rebalancing of the tree'''
+        # Left-heavy subtree (balance < -1)
+        if self.balance < -1:
+            # Check for Left-Right case: If left child is right-heavy, we perform a left rotation on it first
+            if self.left and self.left.balance > 0:
+                # Left-rotate the left child
+                self.left.left_rotate() 
+            # Perform a right rotation on the current node (this handles the Left-Left or Left-Right case)
+            self.right_rotate()
+
+        # Right-heavy subtree (balance > 1)
+        elif self.balance > 1:
+            # Check for Right-Left case: If right child is left-heavy, 
+            # we perform a right rotation on it first
+            if self.right and self.right.balance < 0:
+                # Right-rotate the right child
+                self.right.right_rotate()  
+            # Perform a left rotation on the current node (this handles the Right-Right or Right-Left case)
+            self.left_rotate()
+
+    def left_rotate(self):
+        '''Perform left rotation on the current node to balance the tree'''
+        # The current node's right child becomes the new root, if it exists
+        new_root = None
+        if self.right:
+            new_root = self.right
+            
+            # The right child’s left subtree becomes the current node’s right child
+            self.right = new_root.left
+            
+            # The current node becomes the left child of the new root
+            new_root.left = self
+            
+            # Update the balance factors for the current node and the new root
+            # The current node’s balance decreases by 1 (it’s shifted one level down)
+            self.balance = self.balance - 1 - max(new_root.balance, 0)
+            
+            # The new root's balance factor is adjusted based on the current node’s balance
+            new_root.balance = new_root.balance - 1 + min(self.balance, 0)
+        
+        # Return the new root of the subtree
+        return new_root
+
+    def right_rotate(self):
+        '''Perform right rotation on the current node to balance the tree'''
+        # The current node's left child becomes the new root, if it exists
+        new_root = None
+        if self.left:
+            new_root = self.left
+            
+            # The left child’s right subtree becomes the current node’s left child
+            self.left = new_root.right
+            
+            # The current node becomes the right child of the new root
+            new_root.right = self
+            
+            # Update the balance factors for the current node and the new root
+            # The current node’s balance increases by 1 (it’s shifted one level down)
+            self.balance = self.balance + 1 - min(new_root.balance, 0)
+            
+            # The new root's balance factor is adjusted based on the current node’s balance
+            new_root.balance = new_root.balance + 1 - max(self.balance, 0)
+        
+        # Return the new root of the subtree
+        return new_root
 
     def insert(self, data):
-        # No data here at root
+        '''Insert a node into the AVL tree and rebalance if necessary'''
+        # If there is no data at the root (this is the first insertion)
         if not self.data:
-            self.data = data
-        # Insert to the left if it's smaller
-        elif data < self.data:
-            # Gotta check if it exists first
-            if not self.left:
+            self.data = data  # Set the current node's data
+            return self
+        
+        # Insert data in the left subtree if the data is smaller than the current node's data
+        if data < self.data:
+            if not self.left: 
                 self.left = AVL_Tree(data)
-                self.balance -= 1
+                # Left insertion makes the node more left-heavy
+                self.balance -= 1  
             else:
-                self.left.insert(data)
+                # Recursively insert in the left subtree
+                self.left = self.left.insert(data)  
+
+        # Insert data in the right subtree if the data is larger than the current node's data
         elif data > self.data:
-            # Same here
             if not self.right:
                 self.right = AVL_Tree(data)
-                self.balance += 1
+                # Right insertion makes the node more right-heavy
+                self.balance += 1  
             else:
-                self.right.insert(data)
-        if self.balance >= 1 or self.balance <= -1:
+                # Recursively insert in the right subtree
+                self.right = self.right.insert(data)  
+
+        # After insertion, update the balance factor of the current node
+        self.balance = self.find_balance()
+
+        # Check the balance, rebalance if necessary
+        if self.balance > 1 or self.balance < -1:
             self.rebalance_helper()
-    
+        
+        # Returning self allows us to maintain the tree structure
+        return self
+
+    def find_balance(self):
+        '''Calculate the balance factor of the node (difference between left and right heights)'''
+        # The height of the left subtree, or 0 if there’s no left child
+        left_height = self.left.find_height() if self.left else 0
+        
+        # The height of the right subtree, or 0 if there’s no right child
+        right_height = self.right.find_height() if self.right else 0
+        
+        # Return the difference: left height - right height
+        return left_height - right_height
+
     def search(self, data):
+        '''Search for a value in the AVL tree'''
         found = False
-        # Will only check if the tree exists at all
         if self.data:
+            # If the current node’s data matches the search value, return True
             if self.data == data:
                 found = True
-            # Wasting an extra stack frame for cleaner code
-            elif self.data < data and self.right:
-                found = self.right.search(data)
-            elif self.data > data and self.left:
-                found = self.left.search(data)
-        return found
+            # If the search value is larger, continue searching in the right subtree
+            elif data < self.data and self.right:
+                return self.right.search(data)
+            # If the search value is smaller, continue searching in the left subtree
+            elif data > self.data and self.left:
+                return self.left.search(data)
+        return found 
     
     def find_height(self):
-        '''Finds the maximum depth of the tree'''
-        value = 0
+        '''Find the maximum depth (height) of the tree'''
+        height = 0
         if self.data:
-            left, right = 0, 0
-            if self.left:
-                left = self.left.find_height()
-            if self.right:
-                right = self.right.find_height()
-            value = (right if right > left else left) + 1
-        return value
-    
+            # Get the height of the left and right subtrees
+            left_height = self.left.find_height() if self.left else 0
+            right_height = self.right.find_height() if self.right else 0
+            
+            # The height of the current tree is the max of its left and right subtrees + 1
+            height = 1 + max(left_height, right_height)
+        
+        return height
 
     def print_tree(self, prefix, is_left=False):
-        '''Prints a string representation of the actual tree.'''
+        '''Prints a string representation of the tree structure'''
         if self.data:
+            # Print the current node’s value with its appropriate prefix
             print(prefix, end="")
             print("|__" if is_left else "|---", end="")
             print(self.data)
-            # Enter the next tree level - left and right branch
+            
+            # Recursively print the left and right subtrees
             if self.left:
                 self.left.print_tree(prefix + ("|   " if is_left else "    "), True)
             if self.right:
@@ -98,3 +194,5 @@ if __name__ == "__main__":
     print(f"Is -1 in the our AVL Tree? {avl.search(-1)}")
 
     print(f"The height (max depth) of this tree is: {avl.find_height()}")
+
+    print(f"The balance for our AVL tree is: {avl.find_balance()}")
