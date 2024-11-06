@@ -1,3 +1,4 @@
+import queue
 '''
 Augumenting last week's BST such that it will be height balanced,
 thus becoming an AVL tree.
@@ -163,6 +164,54 @@ class AVL_Tree:
             height = 1 + max(left_height, right_height)
         
         return height
+    
+    #-----Printing Functions------
+    def inorder_print(self):
+        '''Prints values from smallest to largest.'''
+        # Will only print things if something's there
+        if self.data:
+            if self.left:
+                self.left.inorder_print()
+            print(self.data, end = " ")
+            if self.right:
+                self.right.inorder_print()
+
+    def pre_order_print(self):
+        '''Prints values from smallest to largest, node data is first.'''
+        # Will only print things if something's there
+        if self.data:
+            print(self.data, end = " ")
+            if self.left:
+                self.left.inorder_print()
+            if self.right:
+                self.right.inorder_print()
+
+    def post_order_print(self):
+        '''Prints values from smallest to largest, node data is last.'''
+        # Will only print things if something's there
+        if self.data:
+            if self.left:
+                self.left.inorder_print()
+            if self.right:
+                self.right.inorder_print()
+            print(self.data, end = " ")
+    
+    def breadth_first_print(self):
+        '''Cathy's implementation, modified for this data structure.'''
+        the_nodes = queue.Queue()
+
+        if self.data:
+            the_nodes.put(self)
+
+        while not the_nodes.empty():
+            curr = the_nodes.get()
+
+            if curr.left:
+                the_nodes.put(curr.left)
+            if curr.right:
+                the_nodes.put(curr.right)
+
+            print(curr.data, end=" ")
 
     def print_tree(self, prefix, is_left=False):
         '''Prints a string representation of the tree structure'''
