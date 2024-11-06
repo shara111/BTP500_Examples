@@ -122,6 +122,16 @@ class BST:
                 self.left.inorder_print()
             if self.right:
                 self.right.inorder_print()
+
+    def post_order_print(self):
+        '''Prints values from smallest to largest, node data is last.'''
+        # Will only print things if something's there
+        if self.data:
+            if self.left:
+                self.left.inorder_print()
+            if self.right:
+                self.right.inorder_print()
+            print(self.data, end = " ")
     
     def breadth_first_print(self):
         '''Cathy's implementation, modified for this data structure.'''
