@@ -164,7 +164,47 @@ class AVL_Tree:
             height = 1 + max(left_height, right_height)
         
         return height
+
+    def min_value_node(self):
+        '''Return the node with the minimum value found in the tree'''
+        current = self
+        while current.left:
+            current = current.left
+        return current
     
+    # Deletion method for AVL tree
+    def delete(self, data):
+        '''Delete a node from the AVL tree and rebalance if necessary'''
+        if not self:
+            return self  # If the tree is empty, return None
+
+        # Step 1: Perform standard BST delete operation
+        if data < self.data:
+            if self.left:
+                self.left = self.left.delete(data)
+        elif data > self.data:
+            if self.right:
+                self.right = self.right.delete(data)
+        else:
+            # Node to be deleted found
+            if not self.left or not self.right:
+                # Case 1: Node has one child or no child
+                temp = self.left if self.left else self.right
+                return temp  # Return the non-null child or None if no child
+            else:
+                # Case 2: Node has two children, get the inorder successor (smallest in the right subtree)
+                temp = self.right._min_value_node()
+                self.data = temp.data  # Copy the inorder successor's value to this node
+                self.right = self.right.delete(temp.data)  # Delete the inorder successor
+
+        # Step 2: Update height and balance factor of this node
+        self.balance = self.find_balance()
+
+        # Step 3: Rebalance the tree if necessary
+        if self.balance > 1 or self.balance < -1:
+            self.rebalance_helper()
+
+        return self
     #-----Printing Functions------
     def inorder_print(self):
         '''Prints values from smallest to largest.'''
@@ -245,3 +285,6 @@ if __name__ == "__main__":
     print(f"The height (max depth) of this tree is: {avl.find_height()}")
 
     print(f"The balance for our AVL tree is: {avl.find_balance()}")
+
+    avl.delete(3)
+    avl.print_tree("")
