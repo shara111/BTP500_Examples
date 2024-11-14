@@ -2,8 +2,8 @@ import random
 '''
 This is a very basic tree implementation. As you can see,
 it's just a linked list or special graph. Connections are
-directed in trees, and only go down to the childre, or the
-nect tier.
+directed in trees, and only go down to the children, or the
+next tier.
 '''
 
 class Node:
